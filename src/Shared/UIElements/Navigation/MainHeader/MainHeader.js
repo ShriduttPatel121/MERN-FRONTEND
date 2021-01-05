@@ -16,6 +16,10 @@ const useStyles = makeStyles(() => ({
   },
   menuButton: {
     marginRight: '2px',
+    display : 'block',
+    '@media(min-width : 600px)' : {
+      display : 'none'
+    }
   },
   title: {
     flexGrow: 1,

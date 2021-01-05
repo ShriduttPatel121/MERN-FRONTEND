@@ -8,14 +8,14 @@ import {
 import Users from "../User/Pages/Users";
 import NewPlaces from '../Places/Pages/NewPlaces';
 import MainHeader from '../Shared/UIElements/Navigation/MainHeader/MainHeader';
-import SideDrawer from '../Shared/UIElements/Navigation/SideDrawer/SideDrawer';
+import './Main.css';
 
 function Main() {
   
   return (
     <Router>
       <MainHeader />
-      <main style={{marginTop : '64px'}}>
+      <main className="">
       <Switch>
           <Route path="/" exact>
             <Users />
