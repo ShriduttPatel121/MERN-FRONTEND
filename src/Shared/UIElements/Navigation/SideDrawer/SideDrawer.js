@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { ListItemText, ListItemIcon, ListItem, Divider, List, Button, SwipeableDrawer } from '@material-ui/core';
-import { MailIcon, InboxIcon, } from '@material-ui/icons'
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 
 const useStyles = makeStyles({
   list: {
@@ -13,13 +14,10 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SwipeableTemporaryDrawer() {
+ function SideDrawer() {
   const classes = useStyles();
   const [state, setState] = useState({
-    top: false,
     left: false,
-    bottom: false,
-    right: false,
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -61,11 +59,11 @@ export default function SwipeableTemporaryDrawer() {
 
   return (
     <div>
-      {['left', 'right', 'top', 'bottom'].map((anchor) => (
+      {['left'].map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
           <SwipeableDrawer
-            anchor={anchor}
+            anchor="left"
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
             onOpen={toggleDrawer(anchor, true)}
@@ -77,3 +75,5 @@ export default function SwipeableTemporaryDrawer() {
     </div>
   );
 }
+
+export default SideDrawer;
