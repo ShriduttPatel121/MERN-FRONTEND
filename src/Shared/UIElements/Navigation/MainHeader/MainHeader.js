@@ -3,7 +3,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   IconButton,
   SwipeableDrawer
 } from "@material-ui/core";
@@ -26,6 +25,20 @@ const useStyles = makeStyles(() => ({
   title: {
     flexGrow: 1,
   },
+  'horizontal-nav' : {
+    display : 'none',
+    '@media(min-width : 600px)' : {
+      display : 'flex'
+    }
+  },
+
+  'vertical-nav' : {
+    display : 'none',
+    '@media(max-width : 599px' : {
+      display : 'flex',
+      height : '100%'
+    }
+  }
 }));
 const MainHeader = (props) => {
   const classes = useStyles();
@@ -57,7 +70,9 @@ const MainHeader = (props) => {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <NavLinks />
+          <span className="horizontal-nav">
+            <NavLinks orientation="horizontal"/>
+          </span>
         </Toolbar>
       </AppBar>
     </div>
@@ -70,9 +85,9 @@ const MainHeader = (props) => {
       onClose={toggleDrawer(false)}
       onOpen={toggleDrawer(true)}
     >
-      <div>
-        This A drawer
-      </div>
+      <span className="vertical-nav">
+        <NavLinks orientation="vertical"/>
+      </span>
     </SwipeableDrawer>
   );
 

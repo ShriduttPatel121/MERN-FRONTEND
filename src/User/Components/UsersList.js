@@ -1,4 +1,4 @@
-import { Card, Container, Typography, CardContent } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import React from "react";
 import "./UsersList.css";
 import Useritem from "./UserItem";
