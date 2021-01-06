@@ -20,7 +20,7 @@ function Main() {
           <Route path="/" exact>
             <Users />
           </Route>
-          <Route path="/places/new" exact>
+          <Route path="/place/new" exact>
             <NewPlaces />
           </Route>
           <Redirect to="/" />

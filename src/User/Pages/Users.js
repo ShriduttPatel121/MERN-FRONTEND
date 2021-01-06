@@ -27,6 +27,30 @@ const Users = (props) => {
         places: 12,
         image : 'blue_person.jpeg'
     },
+    {
+      id: "u5",
+      name: "Dushyant",
+      places: 12,
+      image : 'blue_person.jpeg'
+    },
+    {
+      id: "u6",
+      name: "Udayprabha",
+      places: 12,
+      image : 'blue_person.jpeg'
+    },
+    {
+      id: "u7",
+      name: "Narendra",
+      places: 10,
+      image : 'blue_person.jpeg'
+    },
+    {
+      id: "u8",
+      name: "Shridutt",
+      places: 4,
+      image : 'blue_person.jpeg'
+    },
   ];
   return <UsersList items={USERS} />;
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,7 +13,6 @@ import NavLinks from '../NavLinks/NavLinks';
 
 const useStyles = makeStyles(() => ({
   root: {
-    flexGrow: 1,
   },
   menuButton: {
     marginRight: '2px',
@@ -45,15 +44,28 @@ const MainHeader = (props) => {
 
   const [ drawerVisibility, setDrawerVisibility] = useState(false);
 
+  useEffect(() => {
+    console.log('drawerVisibility is changed');
+    return () => {
+      
+    }
+  }, [drawerVisibility])
+
   const toggleDrawer = (open) => (event) => {
     console.log(event);
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       console.log('test on button')
       return;
-    }
-    setDrawerVisibility(open);
+    } 
+    console.log(open)
+    setDrawerVisibility(preState => {
+      if (preState === false && open === false ) {
+        return drawerVisibility
+      } else {
+        return open;
+      }
+    });
   };
-
   const headerBar = (
     <div className={classes.root}>
       <AppBar position="fixed">
@@ -63,7 +75,7 @@ const MainHeader = (props) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
-            onClick={toggleDrawer(true)}
+            onClick={ toggleDrawer(true)}
           >
             <MenuIcon/>
           </IconButton>
@@ -71,7 +83,7 @@ const MainHeader = (props) => {
             News
           </Typography>
           <span className="horizontal-nav">
-            <NavLinks orientation="horizontal"/>
+            <NavLinks orientation="horizontal" closeDrawer={toggleDrawer}/>
           </span>
         </Toolbar>
       </AppBar>
@@ -86,7 +98,7 @@ const MainHeader = (props) => {
       onOpen={toggleDrawer(true)}
     >
       <span className="vertical-nav">
-        <NavLinks orientation="vertical"/>
+        <NavLinks orientation="vertical" closeDrawer={toggleDrawer}/>
       </span>
     </SwipeableDrawer>
   );

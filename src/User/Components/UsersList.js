@@ -12,6 +12,7 @@ const useStyles = makeStyles({
         width : '70%',
         padding : '0.5rem',
         flexWrap : 'wrap',
+        height : '100%'
     }
 })
 const UsersList = (props) => {
@@ -20,7 +21,6 @@ const UsersList = (props) => {
     return (
       <Container className={classes.root} maxWidth="md">
         <Typography
-          style={{ textAlign: "center", margin: "50% 0" }}
           variant="h5"
           component="h2"
         >
