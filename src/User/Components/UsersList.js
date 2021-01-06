@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         flexWrap : 'wrap',
         height : '100%'
     }
-})
+});
 const UsersList = (props) => {
     const classes = useStyles();
   if (props.items.length === 0) {

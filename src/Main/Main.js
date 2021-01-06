@@ -8,6 +8,7 @@ import {
 import Users from "../User/Pages/Users";
 import NewPlaces from '../Places/Pages/NewPlaces';
 import MainHeader from '../Shared/UIElements/Navigation/MainHeader/MainHeader';
+import UserPlaces from '../Places/Pages/UserPlaces';
 import './Main.css';
 
 function Main() {
@@ -19,6 +20,9 @@ function Main() {
       <Switch>
           <Route path="/" exact>
             <Users />
+          </Route>
+          <Route to="/:userId/places" exact>
+            <UserPlaces />
           </Route>
           <Route path="/place/new" exact>
             <NewPlaces />

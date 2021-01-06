@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 })
 const Useritem =  (props) =>{
     const classes = useStyles();
-    console.log(props.image + typeof (props.image))
+
     return(
         <Card className={classes.root}>
         <Link to={`/${props.id}/places`}>
