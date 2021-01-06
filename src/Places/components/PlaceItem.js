@@ -69,5 +69,3 @@ const PlaceItem = (props) =>{
     );
 };
 export default PlaceItem;
-
-//https://www.google.co.in/imgres?imgurl=https%3A%2F%2Fwww.expatica.com%2Fapp%2Fuploads%2Fsites%2F9%2F2017%2F07%2Fcost-of-living-in-switzerland.jpg&imgrefurl=https%3A%2F%2Fwww.expatica.com%2Fch%2Fmoving%2Fabout%2Fcost-of-living-in-switzerland-1181681%2F&tbnid=y1s7zCpCnvBFJM&vet=12ahUKEwjmzaHj8IfuAhXcMbcAHSAfCq4QMygBegUIARDOAQ..i&docid=gmpkQ0smh2srZM&w=1800&h=1200&q=switzerland%20images&hl=en&authuser=0&ved=2ahUKEwjmzaHj8IfuAhXcMbcAHSAfCq4QMygBegUIARDOAQ
