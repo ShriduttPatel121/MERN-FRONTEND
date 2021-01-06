@@ -44,20 +44,10 @@ const MainHeader = (props) => {
 
   const [ drawerVisibility, setDrawerVisibility] = useState(false);
 
-  useEffect(() => {
-    console.log('drawerVisibility is changed');
-    return () => {
-      
-    }
-  }, [drawerVisibility])
-
   const toggleDrawer = (open) => (event) => {
-    console.log(event);
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      console.log('test on button')
       return;
     } 
-    console.log(open)
     setDrawerVisibility(preState => {
       if (preState === false && open === false ) {
         return drawerVisibility
