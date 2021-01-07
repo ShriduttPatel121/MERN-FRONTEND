@@ -24,7 +24,7 @@ const Modal = (props) => {
           <DialogTitle>{title}</DialogTitle>
           <DialogContent>Here we will render the map, TODAY</DialogContent>
           <DialogActions>
-              <Button onClick={onCloseModal}></Button>
+              <Button onClick={onCloseModal}>CLOSE</Button>
           </DialogActions>
       </Dialog>
   );
