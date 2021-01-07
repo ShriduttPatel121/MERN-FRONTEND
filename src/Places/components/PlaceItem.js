@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Typography, Card, CardContent, CardMedia, CardActionArea, CardActions, Collapse, IconButton } from '@material-ui/core';
+import { Typography, Card, CardContent, CardMedia, CardActions, Collapse, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import clsx from 'clsx';
 import { Edit, RoomOutlined, DeleteRounded, ExpandMoreRounded } from '@material-ui/icons';
 
 const useStyles = makeStyles( (theme) => ({
     root: {
-        width: 400,
+        width: 700,
         marginTop : '2rem'
       },
       media: {

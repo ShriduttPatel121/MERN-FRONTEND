@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
@@ -27,6 +27,8 @@ const useStyles = makeStyles({
 const NavLinks = (props) =>{
     const classes = useStyles();
 
+    const { pathname } = useLocation();
+
     const [tabValue, setTabValue] = useState("/");
 
     const handleChange = (event, newValue) => {
@@ -34,16 +36,17 @@ const NavLinks = (props) =>{
       };
 
       useEffect(() => {
-         if (window.location.href.includes('/places')) {
+         if (pathname.includes('/places')) {
             setTabValue('/places');
-         } else if (window.location.href.includes('/new')) {
+         } else if (pathname.includes('/new')) {
              setTabValue('/place/new');
-         }  else if (window.location.href === '/Auth') {
+         }  else if (pathname === '/Auth') {
              setTabValue('/Auth');
          }  else {
              setTabValue('/');
          }
-      }, []);
+         console.log(pathname);
+      }, [pathname]);
 
     return(
         <React.Fragment>
