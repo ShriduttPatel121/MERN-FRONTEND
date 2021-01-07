@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+#debug logs
+debug.log
+
 # production
 /build
 
