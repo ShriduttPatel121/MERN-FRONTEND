@@ -40,10 +40,10 @@ const PlaceItem = (props) =>{
                 <Typography variant="body2" color="textSecondary" component="p"></Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
+                <IconButton >
                     <RoomOutlined />
                 </IconButton>
-                <IconButton aria-label="share">
+                <IconButton >
                     <Edit />
                 </IconButton>
                 <IconButton>
@@ -55,7 +55,6 @@ const PlaceItem = (props) =>{
                 })}
                 onClick={handleExpandClick}
                 aria-expanded={expanded}
-                aria-label="show more"
                 >
                 <ExpandMoreRounded />
                 </IconButton>

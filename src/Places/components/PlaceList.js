@@ -1,7 +1,8 @@
 import React from "react";
-import { Container, Typography } from "@material-ui/core";
+import { Button, Card, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PlaceItem from "./PlaceItem";
+
 
 const useStyles = makeStyles({
   root: {
@@ -20,9 +21,14 @@ const PlaceList = (props) => {
   if (props.items.length === 0) {
     return (
       <Container className={classes.root} maxWidth="md">
-        <Typography variant="h5" component="h2">
-          No user available.
-        </Typography>
+        <Card style={{padding : '3rem', textAlign : 'center'}}>
+          <Typography variant="h5" component="h2">
+            No places are available.
+          </Typography>
+          <Button variant="outlined" style={{marginTop : '0.85rem'}}>
+            Share Places
+          </Button>
+        </Card>
       </Container>
     );
   } else {

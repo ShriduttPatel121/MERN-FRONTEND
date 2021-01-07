@@ -6,7 +6,7 @@ const DUMMY_PLACE_LIST = [
     {
         id : 'p1',
         title : 'A popular Lake in Switzerland',
-        description : 'THis is the most famous lake in Switzerland, and this is the most beautiful lake in the world.',
+        description : 'This is the most famous lake in Switzerland, and this is the most beautiful lake in the world.',
         address : 'Rosenweg 20, Lachen, Unterbäch, 3944, Switzerland',
         location : {
             lat : 46.8182,
@@ -18,7 +18,7 @@ const DUMMY_PLACE_LIST = [
     {
         id : 'p2',
         title : 'A popular Lake in Switzerland',
-        description : 'THis is the most famous lake in Switzerland, and this is the most beautiful lake in the world.',
+        description : 'This is the most famous lake in Switzerland, and this is the most beautiful lake in the world.',
         address : 'Rosenweg 20, Lachen, Unterbäch, 3944, Switzerland',
         location : {
             lat : 46.8182,
@@ -30,7 +30,7 @@ const DUMMY_PLACE_LIST = [
     {
         id : 'p3',
         title : 'A popular Lake in Switzerland',
-        description : 'THis is the most famous lake in Switzerland, and this is the most beautiful lake in the world.',
+        description : 'This is the most famous lake in Switzerland, and this is the most beautiful lake in the world.',
         address : 'Rosenweg 20, Lachen, Unterbäch, 3944, Switzerland',
         location : {
             lat : 46.8182,
