@@ -1,0 +1,22 @@
+.Input{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.Icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    position: absolute;
+    right: 3.2%;
+    top: 14.5%;
+    height: 3.39rem;
+    border-radius: 3px;
+}
+
+.IconInvalid {
+    top : 11.5%
+}
