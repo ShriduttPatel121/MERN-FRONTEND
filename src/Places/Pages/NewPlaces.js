@@ -55,7 +55,6 @@ const NewPlaces =  (props) =>{
                 }}
             >
             { (props) => {
-                console.log(!props.isValid || props.isSubmitting)
                 return (
                     <Container className={classes.root} maxWidth="md">
                         <Card style={{padding : '3rem', textAlign : 'center'}}>
