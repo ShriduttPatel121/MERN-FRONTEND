@@ -36,14 +36,16 @@ const NavLinks = (props) =>{
       };
 
       useEffect(() => {
-         if (pathname.includes('/places')) {
+         if (pathname === '/places') {
             setTabValue('/places');
          } else if (pathname.includes('/new')) {
              setTabValue('/place/new');
          }  else if (pathname === '/Auth') {
              setTabValue('/Auth');
-         }  else {
+         }  else if (pathname === '/') {
              setTabValue('/');
+         } else {
+             setTabValue(0);
          }
          console.log(pathname);
       }, [pathname]);
@@ -55,6 +57,7 @@ const NavLinks = (props) =>{
                 <Tab label="My Places" onClick={props.closeDrawer(false)} value="/places" to="/u1/places" component={NavLink}/>
                 <Tab label="Add Places" onClick={props.closeDrawer(false)} value="/place/new" to="/place/new" component={NavLink}/>
                 <Tab label="Authenticate" onClick={props.closeDrawer(false)} value="/Auth" to="/Auth" component={NavLink}/>
+                <Tab disabled value={0} style={{display : 'none'}}/>
             </Tabs>
         </React.Fragment>
     );

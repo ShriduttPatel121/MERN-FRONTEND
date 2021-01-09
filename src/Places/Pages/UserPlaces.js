@@ -38,7 +38,7 @@ const DUMMY_PLACE_LIST = [
         },
         creator : 'u1'
     }
-]
+];
 
 const UserPlaces = (props) =>{
     const id = useParams().userId;
