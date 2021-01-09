@@ -1,6 +1,5 @@
 import React, { forwardRef } from "react";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,7 +7,6 @@ import {
   Slide,
 } from "@material-ui/core";
 
-import Map from '../Map/Map';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyle = makeStyles( (theme) => ({
@@ -35,7 +33,7 @@ const Transition = forwardRef((props, ref) => {
 
 const Modal = (props) => {
   const classes = useStyle();
-  let { open, onCloseModal, title } = props;
+  let { open, onCloseModal, title, children, actions } = props;
   return (
       <Dialog 
       open={open}
@@ -45,10 +43,10 @@ const Modal = (props) => {
       >
           <DialogTitle>{title}</DialogTitle>
           <DialogContent>
-            <Map center={props.center} zoom={props.zoom}/>
+            {children}
           </DialogContent>
           <DialogActions className={classes.actions}>
-              <Button variant="contained" color="primary" onClick={onCloseModal}>CLOSE</Button>
+              {actions}
           </DialogActions>
       </Dialog>
   );

@@ -7,6 +7,7 @@ import {
   CardActions,
   Collapse,
   IconButton,
+  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
@@ -17,7 +18,8 @@ import {
   ExpandMoreRounded,
 } from "@material-ui/icons";
 import Modal from "../../Shared/UIElements/Modal/Modal";
-import { useHistory } from 'react-router-dom';
+import Map from "../../Shared/UIElements/Map/Map";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,8 +30,12 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "56.25%", // 16:9
   },
-  actionArea : {
-    padding : '8px 16px'
+  actionArea: {
+    padding: "8px 16px",
+  },
+  deleteBtn : {
+    backgroundColor : '#f23030',
+    color : 'white'
   },
   expand: {
     transform: "rotate(0deg)",
@@ -46,7 +52,8 @@ const PlaceItem = (props) => {
   console.log(props);
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const [modalVisibility, setModalVisibility] = useState(false);
+  const [locationModalVisibility, setLocationModalVisibility] = useState(false);
+  const [deleteModalVisibility, setDeleteModalVisibility] = useState(false);
   const history = useHistory();
 
   const handleExpandClick = () => {
@@ -54,29 +61,72 @@ const PlaceItem = (props) => {
   };
 
   const openLocationModal = () => {
-    setModalVisibility(true);
+    setLocationModalVisibility(true);
+  };
+
+  const openDeleteModal = () => {
+    setDeleteModalVisibility(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModalVisibility(false);
   };
 
   const closeLocationModal = () => {
-    setModalVisibility(false);
+    setLocationModalVisibility(false);
   };
 
   const editPlaceHandler = () => {
-    history.push(`/place/${props.id}`)
-  }
-
-  
+    history.push(`/place/${props.id}`);
+  };
 
   return (
     <React.Fragment>
       <Modal
-        open={modalVisibility}
+        open={locationModalVisibility}
         onOpenModal={openLocationModal}
         onCloseModal={closeLocationModal}
         title={props.title}
-        center={props.coordinate}
-        zoom={10}
-      />
+        actions={
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={closeLocationModal}
+          >
+            CLOSE
+          </Button>
+        }
+      >
+        <Map zoom={10} center={props.coordinate} />
+      </Modal>
+      <Modal
+        open={deleteModalVisibility}
+        onOpenModal={openDeleteModal}
+        onCloseModal={closeDeleteModal}
+        title="Warning!!!"
+        actions={
+          <React.Fragment>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={closeLocationModal}
+            >
+              CANCEL
+            </Button>
+            <Button
+              variant="contained"
+              onClick={closeDeleteModal}
+              className={classes.deleteBtn}
+            >
+              DELETE
+            </Button>
+          </React.Fragment>
+        }
+      >
+        <Typography variant="body2" gutterBottom>
+
+      </Typography>
+      </Modal>
       <Card className={classes.root}>
         <CardMedia
           component="img"
@@ -87,11 +137,9 @@ const PlaceItem = (props) => {
           <Typography variant="h5" component="h2">
             {props.title}
           </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            component="p"
-          >{props.address}</Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {props.address}
+          </Typography>
         </CardContent>
         <CardActions disableSpacing>
           <IconButton onClick={openLocationModal}>
@@ -100,7 +148,7 @@ const PlaceItem = (props) => {
           <IconButton onClick={editPlaceHandler}>
             <Edit />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={openDeleteModal}>
             <DeleteRounded />
           </IconButton>
           <IconButton
