@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Typography,
   Container,
@@ -11,13 +11,14 @@ import * as Yup from "yup";
 import { makeStyles } from "@material-ui/styles";
 
 import TextInput from "../../Shared/UIElements/Input/TextInput";
+import { AuthContext } from "../../Shared/context/auth-context";
 
-let initialValues ={
-    name : "",
-    email : "",
-    password : "",
-    cnfPassword : ""
-}
+let initialValues = {
+  name: "",
+  email: "",
+  password: "",
+  cnfPassword: "",
+};
 
 const useStyles = makeStyles({
   root: {
@@ -28,6 +29,9 @@ const useStyles = makeStyles({
     padding: "0.5rem",
     flexWrap: "wrap",
     height: "100%",
+    "@media(max-width : 52rem)": {
+      width: "80%",
+    },
   },
   formContainer: {
     padding: "2rem 1rem",
@@ -46,6 +50,7 @@ const UserAuth = (props) => {
   const [cnfPasswordVisibility, setCnfPasswordVisibility] = useState(
     "password"
   );
+  const auth = useContext(AuthContext);
   const [mode, setMode] = useState("login");
 
   const switchModeHandler = () => {
@@ -133,7 +138,10 @@ const UserAuth = (props) => {
         onSubmit={(value, { setSubmitting, resetForm }) => {
           setSubmitting(false);
           resetForm(false);
-          console.log(value);
+          console.log(mode);
+          if (mode === "login") {
+            auth.login();
+          }
         }}
       >
         {(props) => {

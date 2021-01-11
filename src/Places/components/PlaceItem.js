@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Typography,
   Card,
@@ -19,6 +19,7 @@ import {
 } from "@material-ui/icons";
 import Modal from "../../Shared/UIElements/Modal/Modal";
 import Map from "../../Shared/UIElements/Map/Map";
+import { AuthContext } from "../../Shared/context/auth-context";
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,12 +34,12 @@ const useStyles = makeStyles((theme) => ({
   actionArea: {
     padding: "8px 16px",
   },
-  deleteBtn : {
-    backgroundColor : '#f23030',
-    color : 'white',
-    '&:hover' : {
-      backgroundColor : '#c92424'
-    }
+  deleteBtn: {
+    backgroundColor: "#f23030",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#c92424",
+    },
   },
   expand: {
     transform: "rotate(0deg)",
@@ -58,6 +59,8 @@ const PlaceItem = (props) => {
   const [locationModalVisibility, setLocationModalVisibility] = useState(false);
   const [deleteModalVisibility, setDeleteModalVisibility] = useState(false);
   const history = useHistory();
+
+  const auth = useContext(AuthContext);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -126,9 +129,10 @@ const PlaceItem = (props) => {
           </React.Fragment>
         }
       >
-        <Typography variant="h5" component="h2" style={{margin : '1rem 24px'}}>
-          Do you want to proceed and delete this place? Please note that it can't be undone thereafter.
-      </Typography>
+        <Typography variant="h5" component="h2" style={{ margin: "1rem 24px" }}>
+          Do you want to proceed and delete this place? Please note that it
+          can't be undone thereafter.
+        </Typography>
       </Modal>
       <Card className={classes.root}>
         <CardMedia
@@ -148,12 +152,17 @@ const PlaceItem = (props) => {
           <IconButton onClick={openLocationModal}>
             <RoomOutlined />
           </IconButton>
-          <IconButton onClick={editPlaceHandler}>
-            <Edit />
-          </IconButton>
-          <IconButton onClick={openDeleteModal}>
-            <DeleteRounded />
-          </IconButton>
+          {auth.isLoggedIn ? (
+            <React.Fragment>
+              {" "}
+              <IconButton onClick={editPlaceHandler}>
+                <Edit />
+              </IconButton>
+              <IconButton onClick={openDeleteModal}>
+                <DeleteRounded />
+              </IconButton>
+            </React.Fragment>
+          ) : null}
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
