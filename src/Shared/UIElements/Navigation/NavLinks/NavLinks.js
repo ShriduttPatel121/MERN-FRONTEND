@@ -36,7 +36,7 @@ const NavLinks = (props) =>{
       };
 
       useEffect(() => {
-         if (pathname === '/places') {
+         if (pathname.includes('/places')) {
             setTabValue('/places');
          } else if (pathname.includes('/new')) {
              setTabValue('/place/new');
