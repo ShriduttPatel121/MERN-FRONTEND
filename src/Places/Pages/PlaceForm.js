@@ -81,6 +81,12 @@ const useStyles = makeStyles({
     height: "100%",
   },
 
+  formContainer : {
+      padding: "2rem 1rem",
+      textAlign: "center",
+      width: "25rem",
+  },
+
   sybmitBtn: {
     marginTop: "1rem",
   },
@@ -149,11 +155,7 @@ const PlaceForm = (props) => {
           return (
             <Container className={classes.root} maxWidth="md">
               <Card
-                style={{
-                  padding: "2rem 1rem",
-                  textAlign: "center",
-                  width: "25rem",
-                }}
+                className={classes.formContainer}
               >
                 <Typography variant="h5" component="h2">
                   { update? 'Update the place' : 'Add new place' }
