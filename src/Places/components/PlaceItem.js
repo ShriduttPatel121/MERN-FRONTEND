@@ -35,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
   },
   deleteBtn : {
     backgroundColor : '#f23030',
-    color : 'white'
+    color : 'white',
+    '&:hover' : {
+      backgroundColor : '#c92424'
+    }
   },
   expand: {
     transform: "rotate(0deg)",
@@ -109,7 +112,7 @@ const PlaceItem = (props) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={closeLocationModal}
+              onClick={closeDeleteModal}
             >
               CANCEL
             </Button>
@@ -123,8 +126,8 @@ const PlaceItem = (props) => {
           </React.Fragment>
         }
       >
-        <Typography variant="body2" gutterBottom>
-
+        <Typography variant="h5" component="h2" style={{margin : '1rem 24px'}}>
+          Do you want to proceed and delete this place? Please note that it can't be undone thereafter.
       </Typography>
       </Modal>
       <Card className={classes.root}>

@@ -9,6 +9,7 @@ import Users from "../User/Pages/Users";
 import PlaceForm from '../Places/Pages/PlaceForm';
 import MainHeader from '../Shared/UIElements/Navigation/MainHeader/MainHeader';
 import UserPlaces from '../Places/Pages/UserPlaces';
+import UserAuth from '../User/Pages/UserAuth';
 import './Main.css';
 
 function Main() {
@@ -29,6 +30,9 @@ function Main() {
           </Route>
           <Route path="/place/:placeId">
             <PlaceForm updateMode/>
+          </Route>
+          <Route path="/Auth" exact>
+            <UserAuth />
           </Route>
           <Redirect to="/" />
       </Switch>
