@@ -144,7 +144,7 @@ const UserAuth = (props) => {
                   <Button
                     type="button"
                     size="large"
-                    color="secondary"
+                    color="primary"
                     variant="outlined"
                     style={{marginTop : '1rem'}}
                     onClick={switchModeHandler}
