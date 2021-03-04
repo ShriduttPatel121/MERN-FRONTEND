@@ -173,7 +173,7 @@ const UserAuth = (props) => {
           console.log(mode);
           try {
             if (mode === "login") {
-              await sendRequest(
+              const responseData = await sendRequest(
                 "http://localhost:5000/api/users/login",
                 "POST",
                 JSON.stringify({
@@ -184,7 +184,7 @@ const UserAuth = (props) => {
                   "Content-Type": "application/json",
                 }
               );
-              auth.login();
+              auth.login(responseData.user._id);
             } else {
               await sendRequest(
                 "http://localhost:5000/api/users/signup",

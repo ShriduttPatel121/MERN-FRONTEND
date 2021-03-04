@@ -9,19 +9,19 @@ export const useHttpClient = () => {
       console.log(url + " " + method + " " + body + " ");
       try {
         setIsLoding(true);
-        /* const httpAbortCtrl = new AbortController();
-        activeHttpRequest.current.push(httpAbortCtrl); */
+        const httpAbortCtrl = new AbortController();
+        activeHttpRequest.current.push(httpAbortCtrl);
         const response = await fetch(url, {
           method,
           body,
           headers,
-          /* signal: httpAbortCtrl.signal, */
+          signal: httpAbortCtrl.signal,
         });
 
         const responseData = await response.json();
-        /* activeHttpRequest.current = activeHttpRequest.current.filter(
+        activeHttpRequest.current = activeHttpRequest.current.filter(
           (a) => a !== httpAbortCtrl
-        ); */
+        );
 
         if (!response.ok) {
           throw new Error(responseData.message);

@@ -1,8 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PlaceList from '../Components/PlaceList';
 import { useParams } from 'react-router-dom';
+import { Typography, Button, CircularProgress } from '@material-ui/core';
 
-const DUMMY_PLACE_LIST = [
+import { useHttpClient } from '../../Shared/hooks/http-hook';
+import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
+
+
+const UserPlaces = (props) =>{
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    const [errorModalVisibility, setErrorModalVisibility] = useState(false);
+    const [places, setPlaces] = useState([]);
+    const id = useParams().userId;
+    const closeModalHandler = () => {
+        setErrorModalVisibility(false);
+        clearError();
+      }
+
+      useEffect(() => {
+        const getPlaces = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/api/places/user/${id}`);
+                setPlaces(responseData.places);
+            } catch(e) {
+                setErrorModalVisibility(true);
+            }
+        }
+        getPlaces();
+      }, [sendRequest, id]);
+    return (
+        <React.Fragment>
+            <ErrorModal
+        open={errorModalVisibility}
+        onCloseModal={closeModalHandler}
+        title="Error!!"
+        actions={
+          <React.Fragment>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={closeModalHandler}
+            >
+              OK
+            </Button>
+          </React.Fragment>
+        }
+      >
+        <Typography
+          variant="h5"
+          component="h2"
+          style={{ margin: "1rem 24px", minWidth: "20rem" }}
+        >
+          {error || "Somthing went wrong. Plase try again."}
+        </Typography>
+      </ErrorModal>
+        { isLoading && (
+            <div style={{height : '100%', display : 'flex', justifyContent : 'center', alignItems : 'center'}}>
+                <CircularProgress size={50}/>
+            </div>
+        ) }
+        { !isLoading && places && <PlaceList items={places}/> }
+        </React.Fragment>
+    );
+};
+export default UserPlaces;
+/* const DUMMY_PLACE_LIST = [
     {
         id : 'p1',
         title : 'A popular Lake in Switzerland',
@@ -38,12 +100,4 @@ const DUMMY_PLACE_LIST = [
         },
         creator : 'u1'
     }
-];
-
-const UserPlaces = (props) =>{
-    const id = useParams().userId;
-    console.log(useParams());
-    const ary = DUMMY_PLACE_LIST.filter(place => place.creator === id);
-    return <PlaceList items={ary}/>;
-};
-export default UserPlaces;
+]; */
