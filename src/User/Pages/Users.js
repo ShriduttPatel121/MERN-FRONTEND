@@ -3,35 +3,28 @@ import { Typography, Button, CircularProgress } from '@material-ui/core';
 
 import UsersList from "../Components/UsersList";
 import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
+import { useHttpClient } from '../../Shared/hooks/http-hook';
 
 const Users = (props) => {
   const [USERS, setUSERS] = useState([]);
-  const [isLoading, setIsLoding] = useState(false);
-  const [error, setError] = useState();
   const [errorModalVisibility, setErrorModalVisibility] = useState(false);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const closeErrorModal = () => {
     setErrorModalVisibility(false);
+    clearError();
   }
   useEffect(() => {
     const getAllUsers = async () => {
-      setIsLoding(true);
-      setError(null);
       try {
-        const response = await fetch('http://localhost:5000/api/users');
-        const responseData = await response.json();
-        if(!response.ok) {
-          throw new Error(responseData.message)
-        }
-
+        const responseData = await sendRequest('http://localhost:5000/api/users');
         setUSERS(responseData.users);
       } catch (e) {
-        setError(e.message || "somthing went wrong.")
+        setErrorModalVisibility(true);
       }
-      setIsLoding(false)
     }
     getAllUsers();
-  }, []);
+  }, [sendRequest]);
   
   return (
      <React.Fragment>

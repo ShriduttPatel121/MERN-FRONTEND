@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/styles";
 import TextInput from "../../Shared/UIElements/Input/TextInput";
 import { AuthContext } from "../../Shared/context/auth-context";
 import ErrorModal from "../../Shared/UIElements/ErrorModal/ErrorModal";
+import { useHttpClient } from "../../Shared/hooks/http-hook";
 
 let initialValues = {
   name: "",
@@ -52,8 +53,7 @@ const UserAuth = (props) => {
   const [cnfPasswordVisibility, setCnfPasswordVisibility] = useState(
     "password"
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext);
   const [mode, setMode] = useState("login");
   const [errorModalVisiblity, setErrorModalVisiblity] = useState(false);
@@ -85,6 +85,7 @@ const UserAuth = (props) => {
 
   const closeErrorModal = () => {
     setErrorModalVisiblity(false);
+    clearError(null);
   };
   let form = null;
   let validation = null;
@@ -172,57 +173,35 @@ const UserAuth = (props) => {
           console.log(mode);
           try {
             if (mode === "login") {
-              setIsLoading(false);
-              const response = await fetch(
+              await sendRequest(
                 "http://localhost:5000/api/users/login",
+                "POST",
+                JSON.stringify({
+                  email: value.email,
+                  password: value.password,
+                }),
                 {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    email: value.email,
-                    password: value.password,
-                  }),
+                  "Content-Type": "application/json",
                 }
               );
-              const responseData = await response.json();
-              if (!response.ok) {
-                console.log(responseData);
-                setError(responseData.message);
-                throw new Error(responseData.message);
-              }
-              
               auth.login();
             } else {
-              setIsLoading(true);
-              const response = await fetch(
+              await sendRequest(
                 "http://localhost:5000/api/users/signup",
+                "POST",
+                JSON.stringify({
+                  name: value.name,
+                  email: value.email,
+                  password: value.password,
+                }),
                 {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    name: value.name,
-                    email: value.email,
-                    password: value.password,
-                  }),
+                  "Content-Type": "application/json",
                 }
               );
-              const responseData = await response.json();
-              if (!response.ok) {
-                console.log(responseData);
-                setError(responseData.message);
-                throw new Error(responseData.message);
-              }
-              setIsLoading(false);
-              //setMode("login");
+              setMode("login");
             }
           } catch (e) {
             console.log(e);
-            setIsLoading(false);
-            setError(e.message || "Somthing went wrong plase try again later.");
             setErrorModalVisiblity(true);
           }
         }}
