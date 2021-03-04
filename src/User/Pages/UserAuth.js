@@ -5,6 +5,7 @@ import {
   Card,
   Button,
   Divider,
+  CircularProgress
 } from "@material-ui/core";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -12,6 +13,7 @@ import { makeStyles } from "@material-ui/styles";
 
 import TextInput from "../../Shared/UIElements/Input/TextInput";
 import { AuthContext } from "../../Shared/context/auth-context";
+import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
 
 let initialValues = {
   name: "",
@@ -50,12 +52,15 @@ const UserAuth = (props) => {
   const [cnfPasswordVisibility, setCnfPasswordVisibility] = useState(
     "password"
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const auth = useContext(AuthContext);
   const [mode, setMode] = useState("login");
+  const [errorModalVisiblity, setErrorModalVisiblity] = useState(false);
 
   const switchModeHandler = () => {
     setMode((preState) => {
-      if (mode === "login") {
+      if (preState === "login") {
         return "signup";
       } else {
         return "login";
@@ -78,6 +83,9 @@ const UserAuth = (props) => {
     }
   };
 
+  const closeErrorModal = () => {
+    setErrorModalVisiblity(false);
+  }
   let form = null;
   let validation = null;
 
@@ -132,15 +140,67 @@ const UserAuth = (props) => {
 
   return (
     <React.Fragment>
+    { !!error ? 
+      <ErrorModal 
+        open={errorModalVisiblity}
+        onCloseModal={closeErrorModal}
+        title="Error!!"
+        actions={
+          <React.Fragment>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={closeErrorModal}
+            >
+              OK
+            </Button>
+          </React.Fragment>
+        }
+      >
+      <Typography variant="h5" component="h2" style={{ margin: "1rem 24px", minWidth : "20rem" }}>
+          { error || "Somthing went wrong. Plase try again."}
+        </Typography>
+      </ErrorModal>
+     : null }
       <Formik
         initialValues={initialValues}
         validationSchema={validation}
-        onSubmit={(value, { setSubmitting, resetForm }) => {
+        onSubmit={async (value, { setSubmitting, resetForm }) => {
           setSubmitting(false);
           resetForm(false);
           console.log(mode);
           if (mode === "login") {
             auth.login();
+          } else {
+            try {
+              setIsLoading(true);
+              const response = await fetch('http://localhost:5000/api/users/signup', {
+              method : 'POST',
+              headers : {
+                'Content-Type' : 'application/json'
+              }, 
+              body : JSON.stringify({
+                name : value.name,
+                email : value.email,
+                password : value.password
+              })
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+              console.log(responseData);
+              setError(responseData.message);
+              throw new Error(responseData.message);
+            }
+            setIsLoading(false);
+            //setMode("login");
+            
+            } catch (e) {
+              console.log(e);
+              setIsLoading(false);
+              setError(e.message || 'Somthing went wrong plase try again later.');
+              setErrorModalVisiblity(true);
+            }
+            
           }
         }}
       >
@@ -161,7 +221,7 @@ const UserAuth = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Button
+                    { isLoading ? <CircularProgress /> :  <Button
                       type="submit"
                       size="large"
                       variant="contained"
@@ -170,7 +230,7 @@ const UserAuth = (props) => {
                       className={classes.sybmitBtn}
                     >
                       {mode === "login" ? "Login" : "Signup"}
-                    </Button>
+                    </Button>}
                     <Button
                       type="button"
                       size="large"
