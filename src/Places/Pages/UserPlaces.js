@@ -5,6 +5,7 @@ import { Typography, Button, CircularProgress } from '@material-ui/core';
 
 import { useHttpClient } from '../../Shared/hooks/http-hook';
 import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
+import { endpoints } from '../../environment/endpoints';
 
 
 const UserPlaces = (props) =>{
@@ -15,6 +16,14 @@ const UserPlaces = (props) =>{
     const closeModalHandler = () => {
         setErrorModalVisibility(false);
         clearError();
+      }
+
+      const onDeletePlace = async (placeId) => {
+        //const responseData = await sendRequest(endpoints.places+ '/user'+ id);
+        //setPlaces(responseData.places);
+        setPlaces( (prePlaces) => {
+          return prePlaces.filter(p => p.id !== placeId);
+       })
       }
 
       useEffect(() => {
@@ -59,7 +68,7 @@ const UserPlaces = (props) =>{
                 <CircularProgress size={50}/>
             </div>
         ) }
-        { !isLoading && places && <PlaceList items={places}/> }
+        { !isLoading && places && <PlaceList onDeletePlace={onDeletePlace} items={places}/> }
         </React.Fragment>
     );
 };

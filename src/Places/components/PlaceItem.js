@@ -8,6 +8,9 @@ import {
   Collapse,
   IconButton,
   Button,
+  Container,
+  CircularProgress,
+  Box,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import clsx from "clsx";
@@ -19,8 +22,11 @@ import {
 } from "@material-ui/icons";
 import Modal from "../../Shared/UIElements/Modal/Modal";
 import Map from "../../Shared/UIElements/Map/Map";
+import ErrorModal from "../../Shared/UIElements/ErrorModal/ErrorModal";
 import { AuthContext } from "../../Shared/context/auth-context";
 import { useHistory } from "react-router-dom";
+import { useHttpClient } from "../../Shared/hooks/http-hook";
+import { endpoints } from "../../environment/endpoints";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,12 +59,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const PlaceItem = (props) => {
-  console.log(props);
+  const { id: placeId, onDelete } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [locationModalVisibility, setLocationModalVisibility] = useState(false);
   const [deleteModalVisibility, setDeleteModalVisibility] = useState(false);
+  const [errorModalVisibility, setErrorModalVisibility] = useState(false);
   const history = useHistory();
+  const { isLoading, error, clearError, sendRequest } = useHttpClient();
 
   const auth = useContext(AuthContext);
 
@@ -82,12 +90,48 @@ const PlaceItem = (props) => {
     setLocationModalVisibility(false);
   };
 
+  const errorModalClose = () => {
+    setErrorModalVisibility(false);
+  };
+
+  const errorModalOpen = () => {
+    setErrorModalVisibility(true);
+  };
+
   const editPlaceHandler = () => {
-    history.push(`/place/${props.id}`);
+    history.push(`/place/${placeId}`);
+  };
+
+  const deletePlaceHandler = async () => {
+    try {
+      setDeleteModalVisibility(false);
+      await sendRequest(endpoints.places + placeId, "DELETE", null, {
+        "Content-type": "application/json",
+      });
+      await onDelete(placeId);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <React.Fragment>
+      <ErrorModal
+        open={errorModalVisibility}
+        onCloseModal={errorModalClose}
+        title="Could not delete the place."
+        actions={
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={errorModalClose}
+            >
+              OK
+            </Button>
+          </>
+        }
+      ></ErrorModal>
       <Modal
         open={locationModalVisibility}
         onOpenModal={openLocationModal}
@@ -121,7 +165,7 @@ const PlaceItem = (props) => {
             </Button>
             <Button
               variant="contained"
-              onClick={closeDeleteModal}
+              onClick={deletePlaceHandler}
               className={classes.deleteBtn}
             >
               DELETE
@@ -134,6 +178,17 @@ const PlaceItem = (props) => {
           can't be undone thereafter.
         </Typography>
       </Modal>
+      {isLoading ? (
+        <Box
+          display="flex"
+          height="100vh"
+          justifyContent="center"
+          alignItems="center"
+          position="fixed"
+        >
+          <CircularProgress size={70} />
+        </Box>
+      ) : null}
       <Card className={classes.root}>
         <CardMedia
           component="img"
@@ -152,7 +207,7 @@ const PlaceItem = (props) => {
           <IconButton onClick={openLocationModal}>
             <RoomOutlined />
           </IconButton>
-          {auth.isLoggedIn ? (
+          {auth.userId === props.creatorId ? (
             <React.Fragment>
               {" "}
               <IconButton onClick={editPlaceHandler}>

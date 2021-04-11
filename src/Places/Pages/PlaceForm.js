@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Formik } from "formik";
 import { Typography, Button, Container, Card, CircularProgress } from "@material-ui/core";
 import * as Yup from "yup";
@@ -15,11 +15,6 @@ import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
 let initialValues = {
   title: "",
   address: "",
-  description: "",
-};
-
-let updateInitialValues = {
-  title: "",
   description: "",
 };
 
@@ -65,8 +60,12 @@ const PlaceForm = (props) => {
   const classes = useStyles();
   const update = props.updateMode;
   let newPlaceForm = null;
-  const placeId = useParams().placeId;
+  const { placeId } = useParams();
   const [errorModalVisibility, setErrorModalVisibility] = useState(false);
+  const [updateInitialValues, setUpdateInitialValues] = useState({
+    title: '',
+    description: ''
+  });
 
   const auth = useContext(AuthContext);
   const history = useHistory();
@@ -75,6 +74,23 @@ const PlaceForm = (props) => {
     setErrorModalVisibility(false);
     clearError();
   }
+
+  useEffect(() => {
+    const fillUpdateForm = async () => {
+      try {
+        const response =  await sendRequest(`http://localhost:5000/api/places/${placeId}`, "GET", null,{ 'Content-Type' : 'application/json' })
+        //console.log(response);
+        const palceData = { title: response.place.title, description: response.place.description }
+        setUpdateInitialValues(palceData);
+      } catch (e) {
+        setErrorModalVisibility(true);
+      }
+    }
+    if (update) {
+      fillUpdateForm();
+    }
+  }, [sendRequest, placeId, update])
+
   if (props.updateMode === true) {
     console.log(placeId);
     newPlaceForm = (
@@ -115,6 +131,7 @@ const PlaceForm = (props) => {
     );
   }
 
+
   return (
     <React.Fragment>
     <ErrorModal
@@ -150,6 +167,10 @@ const PlaceForm = (props) => {
           console.log(value);
           try {
             if(update) {
+              await sendRequest(`http://localhost:5000/api/places/${placeId}`, "PATCH", JSON.stringify({
+                title : value.title,
+                description : value.description,
+              }), { 'Content-Type' : 'application/json' });
 
             } else {
               await sendRequest('http://localhost:5000/api/places', "POST", JSON.stringify({
@@ -161,7 +182,7 @@ const PlaceForm = (props) => {
             }
             history.push('/');
           } catch (e) {
-
+            setErrorModalVisibility(true);
           }
 
         }}

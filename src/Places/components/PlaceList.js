@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-const PlaceList = (props) => {
+const PlaceList = ({ onDeletePlace, ...props}) => {
   const classes = useStyles();
   if (props.items.length === 0) {
     return (
@@ -44,6 +44,7 @@ const PlaceList = (props) => {
             address={place.address}
             creatorId={place.creatorId}
             coordinate={place.location}
+            onDelete={onDeletePlace}
           />
         ))}
       </Container>

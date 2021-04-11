@@ -31,7 +31,7 @@ export const useHttpClient = () => {
       } catch (e) {
         setError(e.message || "Somthing went wrong.");
         setIsLoding(false);
-        throw new Error(e.message);
+        //throw new Error(e.message);
       }
     },
     []
