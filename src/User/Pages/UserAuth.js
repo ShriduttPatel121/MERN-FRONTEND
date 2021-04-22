@@ -15,12 +15,14 @@ import TextInput from "../../Shared/UIElements/Input/TextInput";
 import { AuthContext } from "../../Shared/context/auth-context";
 import ErrorModal from "../../Shared/UIElements/ErrorModal/ErrorModal";
 import { useHttpClient } from "../../Shared/hooks/http-hook";
+import ImageUpload from '../../Shared/Components/ImageUpload/ImageUpload';
 
 let initialValues = {
   name: "",
   email: "",
   password: "",
   cnfPassword: "",
+  userImage: undefined
 };
 
 const useStyles = makeStyles({
@@ -116,6 +118,9 @@ const UserAuth = (props) => {
       cnfPassword: Yup.string()
         .required()
         .oneOf([Yup.ref("password"), null], "Should match with above field"),
+      userImage: Yup.mixed()
+                    .required('Image is required.')
+
     });
     form = (
       <React.Fragment>
@@ -215,6 +220,16 @@ const UserAuth = (props) => {
                 </Typography>
                 <Divider style={{ margin: "1rem 0" }} />
                 <form onSubmit={props.handleSubmit}>
+                { mode === "login" ? null: (
+                    <ImageUpload id="user-image"
+                      name="userImage"
+                      {...props}
+                      onChange={(event) => {
+                        console.log(event.target.files[0]);
+                        props.setFieldValue("userImage", event.target.files[0])
+                      }}
+                    />
+                  ) }
                   {form}
                   <div
                     style={{
@@ -222,7 +237,7 @@ const UserAuth = (props) => {
                       flexDirection: "column",
                       alignItems: "center",
                     }}
-                  >
+                  >                  
                     {isLoading ? (
                       <CircularProgress />
                     ) : (
