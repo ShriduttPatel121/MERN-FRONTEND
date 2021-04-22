@@ -175,7 +175,6 @@ const UserAuth = (props) => {
         validationSchema={validation}
         onSubmit={async (value, { setSubmitting, resetForm }) => {
           resetForm(false);
-          console.log(mode);
           try {
             if (mode === "login") {
               const responseData = await sendRequest(
@@ -223,9 +222,7 @@ const UserAuth = (props) => {
                 { mode === "login" ? null: (
                     <ImageUpload id="user-image"
                       name="userImage"
-                      {...props}
                       onChange={(event) => {
-                        console.log(event.target.files[0]);
                         props.setFieldValue("userImage", event.target.files[0])
                       }}
                     />

@@ -13,7 +13,6 @@ const ImageUpload = (props) => {
     }
     const [image, setImage] = useState(null)
     useEffect(() => {
-        console.log(field.value)
         if(!field.value ){
             return;
         }
@@ -27,7 +26,7 @@ const ImageUpload = (props) => {
 
     return (
         <div>
-            <input onChange={props.onChange} ref={inputRef} type="file" id={props.id} accept=".jpeg,.jpg,.png" style={{display: 'none'}}>
+            <input  name={props.name} onChange={props.onChange} ref={inputRef} type="file" id={props.id} accept=".jpeg,.jpg,.png" style={{display: 'none'}}>
 
             </input>
             {
