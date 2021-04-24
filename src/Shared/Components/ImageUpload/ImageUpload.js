@@ -4,9 +4,24 @@ import {
     Button
 } from '@material-ui/core';
 import { useField } from "formik";
+import { Avatar } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles';
+import { CameraAltOutlined } from '@material-ui/icons'
+
+const useStyle = makeStyles((theme) => ({
+    large: {
+        width: theme.spacing(18),
+        height: theme.spacing(18)
+    },
+    place_image : {
+        width: '25rem',
+        height: '20rem'
+    }
+}));
 const ImageUpload = (props) => {
-    
+    const classes = useStyle();
     const inputRef = useRef();
+    const { sigupImage } = props
     const [field, meta] = useField(props);
     const pickImageHandler = () => {
         inputRef.current.click();
@@ -18,7 +33,6 @@ const ImageUpload = (props) => {
         }
         const fileReader = new FileReader();
         fileReader.onload = () => {
-            console.log(fileReader.result)
             setImage(fileReader.result);
         }
         fileReader.readAsDataURL(field.value);
@@ -29,6 +43,13 @@ const ImageUpload = (props) => {
             <input  name={props.name} onChange={props.onChange} ref={inputRef} type="file" id={props.id} accept=".jpeg,.jpg,.png" style={{display: 'none'}}>
 
             </input>
+            
+            <div className={`iamge-upload`}>
+                <div className={sigupImage ? "image-upload__preview" : "Place-image"} >
+                    {image? <Avatar onClick={pickImageHandler} className={sigupImage ? classes.large : classes.place_image} sizes="40" src={image} alt="Preview"/> : <Avatar onClick={pickImageHandler} className={sigupImage ? classes.large : classes.place_image}> <CameraAltOutlined style={{ fontSize: 60 }}/> </Avatar>}
+                </div>
+                
+            </div>
             {
                 meta.error && meta.touched? (
                     <div className="error">
@@ -36,12 +57,6 @@ const ImageUpload = (props) => {
                     </div>
                 ) : null
             }
-            <div className={`iamge-upload`}>
-                <div>
-                    {image? <img src={image} alt="Preview"/> : <p>Please pick an image</p>}
-                </div>
-                
-            </div>
             <Button type="button" onClick={pickImageHandler}>Pick Image</Button>
         </div>
     );

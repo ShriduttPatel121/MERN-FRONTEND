@@ -116,7 +116,7 @@ const UserAuth = (props) => {
       name: Yup.string().required().min(5, "min 5 characters or more"),
       password: Yup.string().required().min(5, "min 5 characters or more"),
       cnfPassword: Yup.string()
-        .required()
+        .required("This field is required.")
         .oneOf([Yup.ref("password"), null], "Should match with above field"),
       userImage: Yup.mixed()
                     .required('Image is required.')
@@ -138,7 +138,7 @@ const UserAuth = (props) => {
           name="cnfPassword"
           visibilityicon="true"
           visiblilitytoggler={cnfPasswordVisibilityHandler}
-          label="Password"
+          label="Confirm password"
         />
       </React.Fragment>
     );
@@ -190,17 +190,15 @@ const UserAuth = (props) => {
               );
               auth.login(responseData.user._id);
             } else {
+              const formData = new FormData();
+              formData.append('email', value.email);
+              formData.append('name', value.name);
+              formData.append('password', value.password);
+              formData.append('image', value.userImage);
               await sendRequest(
                 "http://localhost:5000/api/users/signup",
                 "POST",
-                JSON.stringify({
-                  name: value.name,
-                  email: value.email,
-                  password: value.password,
-                }),
-                {
-                  "Content-Type": "application/json",
-                }
+                formData
               );
               setMode("login");
             }
@@ -220,7 +218,9 @@ const UserAuth = (props) => {
                 <Divider style={{ margin: "1rem 0" }} />
                 <form onSubmit={props.handleSubmit}>
                 { mode === "login" ? null: (
-                    <ImageUpload id="user-image"
+                    <ImageUpload 
+                      id="user-image"
+                      sigupImage
                       name="userImage"
                       onChange={(event) => {
                         props.setFieldValue("userImage", event.target.files[0])

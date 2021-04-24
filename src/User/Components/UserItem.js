@@ -11,6 +11,9 @@ const useStyles = makeStyles({
         '& a' : {
             textDecoration : 'none',
             color : 'inherit'
+        },
+        '& img': {
+            height: '250px'
         }
     }
 })
@@ -21,7 +24,8 @@ const Useritem =  (props) =>{
         <Card className={classes.root}>
         <Link to={`/${props.id}/places`}>
             <CardActionArea>
-                <CardMedia image={require(`../../assets/images/${props.image}`)} component="img" alt="A person"/>
+                {/* <CardMedia image={require(`../../assets/images/${props.image}`)} component="img" alt="A person"/> */}
+                <CardMedia image={props.image} component="img" alt="A person"/>
                 <CardContent>
                     <Typography variant="h5" component="h2">{props.name}</Typography>
                     <Typography variant="body2" color="textSecondary" component="p">{props.placeCount} { props.placeCount === 1 || 0 ? 'Place' : 'Places'}</Typography>
