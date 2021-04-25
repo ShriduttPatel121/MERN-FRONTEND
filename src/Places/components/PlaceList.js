@@ -38,11 +38,11 @@ const PlaceList = ({ onDeletePlace, ...props}) => {
           <PlaceItem
             key={place.id}
             id={place.id}
-            image={place.imageUrl}
+            image={place.image}
             title={place.title}
             description={place.description}
             address={place.address}
-            creatorId={place.creatorId}
+            creatorId={place.creator}
             coordinate={place.location}
             onDelete={onDeletePlace}
           />

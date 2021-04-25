@@ -17,7 +17,7 @@ const TextInput = (props) => {
           type={props.type}
           name={props.name}
           helperText={errorText}
-          style={{ maxWidth: "20rem", width : '100%' }}
+          style={{ maxWidth: "35rem", width : '100%' }}
           variant="outlined"
           label={props.label}
           error={meta.error && meta.touched}

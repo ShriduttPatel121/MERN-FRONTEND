@@ -14,8 +14,17 @@ const useStyle = makeStyles((theme) => ({
         height: theme.spacing(18)
     },
     place_image : {
-        width: '25rem',
-        height: '20rem'
+        display: 'flex',
+        alignItems: 'center',
+        margin: '10px',
+        overflow: 'hidden',
+        border: '1px solid #cccc',
+        height: '10rem',
+        '& img': {
+            /* objectFit: 'cover', */
+            width: '100%',
+            height: '100%',
+        }
     }
 }));
 const ImageUpload = (props) => {
@@ -45,13 +54,24 @@ const ImageUpload = (props) => {
             </input>
             
             <div className={`iamge-upload`}>
-                <div className={sigupImage ? "image-upload__preview" : "Place-image"} >
-                    {image? <Avatar onClick={pickImageHandler} className={sigupImage ? classes.large : classes.place_image} sizes="40" src={image} alt="Preview"/> : <Avatar onClick={pickImageHandler} className={sigupImage ? classes.large : classes.place_image}> <CameraAltOutlined style={{ fontSize: 60 }}/> </Avatar>}
-                </div>
+                {
+                    sigupImage ? (
+                        <div className={"image-upload__preview"} >
+                            {image ? <Avatar onClick={pickImageHandler} className={classes.large} sizes="40" src={image} alt="Preview"/> : <Avatar onClick={pickImageHandler} className={sigupImage ? classes.large : classes.place_image}> <CameraAltOutlined style={{ fontSize: 60 }}/> </Avatar>}
+                        </div>
+                    ) : null
+                }
+                {
+                    !sigupImage ? (
+                        <div className={classes.place_image} onClick={pickImageHandler}>
+                            {image ? <img onClick={pickImageHandler} sizes="40" src={image} alt="Preview"/> : <div style={{width: '100%', backgroundColor: '#ccccc'}}> <CameraAltOutlined style={{ fontSize: 60 }}/> </div>}
+                        </div>
+                    ): null
+                }
                 
             </div>
             {
-                meta.error && meta.touched? (
+                meta.error ? (
                     <div className="error">
                     { meta.error }
                     </div>

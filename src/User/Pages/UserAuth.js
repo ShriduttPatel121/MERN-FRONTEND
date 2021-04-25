@@ -111,6 +111,7 @@ const UserAuth = (props) => {
       password: Yup.string().required().min(5, "min 5 characters or more"),
     });
   } else {
+    const FILE_SIZE = 5 * 1048576;
     validation = Yup.object({
       email: Yup.string().email().required(),
       name: Yup.string().required().min(5, "min 5 characters or more"),
@@ -120,6 +121,10 @@ const UserAuth = (props) => {
         .oneOf([Yup.ref("password"), null], "Should match with above field"),
       userImage: Yup.mixed()
                     .required('Image is required.')
+                    .test("fileSize", "file is too large, it should be less than 5MB", (value) => {
+                      console.log(value && value.size <= FILE_SIZE);
+                       return value && value.size <= FILE_SIZE; } 
+                       )
 
     });
     form = (

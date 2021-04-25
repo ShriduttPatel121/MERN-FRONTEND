@@ -1,23 +1,30 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Formik } from "formik";
-import { Typography, Button, Container, Card, CircularProgress } from "@material-ui/core";
+import {
+  Typography,
+  Button,
+  Container,
+  Card,
+  CircularProgress,
+} from "@material-ui/core";
 import * as Yup from "yup";
 
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 
 import TextInput from "../../Shared/UIElements/Input/TextInput";
-import { useHttpClient } from '../../Shared/hooks/http-hook';
-import { AuthContext } from '../../Shared/context/auth-context';
-import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
-
+import { useHttpClient } from "../../Shared/hooks/http-hook";
+import { AuthContext } from "../../Shared/context/auth-context";
+import ErrorModal from "../../Shared/UIElements/ErrorModal/ErrorModal";
+import ImageUpload from "../../Shared/Components/ImageUpload/ImageUpload";
 
 let initialValues = {
   title: "",
   address: "",
   description: "",
+  image: undefined,
 };
-
+const FILE_SIZE = 5 * 1048576;
 let validationSchema = {
   title: Yup.string()
     .min(5, "minimum 5 characters or more")
@@ -31,6 +38,12 @@ let validationSchema = {
     .min(10, "minimum 10 characters or more")
     .max(100, "maximum 100 characters or less")
     .required(),
+  image: Yup.mixed()
+    .required("image is required.")
+    .test("fileSize", "file is too large, it should be less than 5MB", 
+    (value) => {
+       return value && value.size <= FILE_SIZE} 
+       ),
 };
 
 const useStyles = makeStyles({
@@ -44,10 +57,10 @@ const useStyles = makeStyles({
     height: "100%",
   },
 
-  formContainer : {
-      padding: "2rem 1rem",
-      textAlign: "center",
-      width: "25rem",
+  formContainer: {
+    padding: "2rem 1rem",
+    textAlign: "center",
+    width: "35rem",
   },
 
   sybmitBtn: {
@@ -63,8 +76,8 @@ const PlaceForm = (props) => {
   const { placeId } = useParams();
   const [errorModalVisibility, setErrorModalVisibility] = useState(false);
   const [updateInitialValues, setUpdateInitialValues] = useState({
-    title: '',
-    description: ''
+    title: "",
+    description: "",
   });
 
   const auth = useContext(AuthContext);
@@ -73,23 +86,31 @@ const PlaceForm = (props) => {
   const closeModalHandler = () => {
     setErrorModalVisibility(false);
     clearError();
-  }
+  };
 
   useEffect(() => {
     const fillUpdateForm = async () => {
       try {
-        const response =  await sendRequest(`http://localhost:5000/api/places/${placeId}`, "GET", null,{ 'Content-Type' : 'application/json' })
+        const response = await sendRequest(
+          `http://localhost:5000/api/places/${placeId}`,
+          "GET",
+          null,
+          { "Content-Type": "application/json" }
+        );
         //console.log(response);
-        const palceData = { title: response.place.title, description: response.place.description }
+        const palceData = {
+          title: response.place.title,
+          description: response.place.description,
+        };
         setUpdateInitialValues(palceData);
       } catch (e) {
         setErrorModalVisibility(true);
       }
-    }
+    };
     if (update) {
       fillUpdateForm();
     }
-  }, [sendRequest, placeId, update])
+  }, [sendRequest, placeId, update]);
 
   if (props.updateMode === true) {
     console.log(placeId);
@@ -104,7 +125,6 @@ const PlaceForm = (props) => {
         />
       </React.Fragment>
     );
-    
 
     validationSchema = {
       title: Yup.string()
@@ -120,7 +140,7 @@ const PlaceForm = (props) => {
     newPlaceForm = (
       <React.Fragment>
         <TextInput type="text" name="title" label="Title" />
-        <TextInput type="text" name="address" label="Address"/>
+        <TextInput type="text" name="address" label="Address" />
         <TextInput
           type="textarea"
           name="description"
@@ -131,10 +151,9 @@ const PlaceForm = (props) => {
     );
   }
 
-
   return (
     <React.Fragment>
-    <ErrorModal
+      <ErrorModal
         open={errorModalVisibility}
         onCloseModal={closeModalHandler}
         title="Error!!"
@@ -163,51 +182,68 @@ const PlaceForm = (props) => {
         enableReinitialize
         validationSchema={Yup.object(validationSchema)}
         onSubmit={async (value, { setSubmitting, resetForm }) => {
-          
           console.log(value);
           try {
-            if(update) {
-              await sendRequest(`http://localhost:5000/api/places/${placeId}`, "PATCH", JSON.stringify({
-                title : value.title,
-                description : value.description,
-              }), { 'Content-Type' : 'application/json' });
-
+            if (update) {
+              await sendRequest(
+                `http://localhost:5000/api/places/${placeId}`,
+                "PATCH",
+                JSON.stringify({
+                  title: value.title,
+                  description: value.description,
+                }),
+                { "Content-Type": "application/json" }
+              );
             } else {
-              await sendRequest('http://localhost:5000/api/places', "POST", JSON.stringify({
-                title : value.title,
-                address : value.address,
-                description : value.description,
-                creator : auth.userId
-              }), { 'Content-Type' : 'application/json' });
+              const formData = new FormData();
+              formData.append('title', value.title);
+              formData.append('address', value.address);
+              formData.append('description', value.description);
+              formData.append('creator', auth.userId);
+              formData.append('image', value.image);
+              await sendRequest(
+                "http://localhost:5000/api/places",
+                "POST",
+                formData
+              );
             }
-            history.push('/');
+            history.push("/");
           } catch (e) {
             setErrorModalVisibility(true);
           }
-
         }}
       >
         {(props) => {
           return (
             <Container className={classes.root} maxWidth="md">
-              <Card
-                className={classes.formContainer}
-              >
+              <Card className={classes.formContainer}>
                 <Typography variant="h5" component="h2">
-                  { update? 'Update the place' : 'Add new place' }
+                  {update ? "Update the place" : "Add new place"}
                 </Typography>
                 <form onSubmit={props.handleSubmit}>
                   {newPlaceForm}
-                  {!isLoading ? <Button
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                    disabled={!props.isValid || props.isSubmitting}
-                    color="primary"
-                    className={classes.sybmitBtn}
-                  >
-                    {update ? 'Update' : 'Save'}
-                  </Button> : <CircularProgress />}
+                  {!update ? (
+                    <ImageUpload
+                      name="image"
+                      onChange={(event) => {
+                        props.setFieldValue("image", event.target.files[0]);
+                      }}
+                    />
+                  ) : null}
+                  {!isLoading ? (
+                    <Button
+                      type="submit"
+                      size="large"
+                      variant="contained"
+                      disabled={!props.isValid || props.isSubmitting}
+                      color="primary"
+                      className={classes.sybmitBtn}
+                    >
+                      {update ? "Update" : "Save"}
+                    </Button>
+                  ) : (
+                    <CircularProgress />
+                  )}
                 </form>
               </Card>
             </Container>
