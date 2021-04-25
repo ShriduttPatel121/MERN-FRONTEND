@@ -205,7 +205,6 @@ const PlaceForm = (props) => {
               formData.append("title", value.title);
               formData.append("address", value.address);
               formData.append("description", value.description);
-              formData.append("creator", auth.userId);
               formData.append("image", value.image);
               await sendRequest(
                 "http://localhost:5000/api/places",
