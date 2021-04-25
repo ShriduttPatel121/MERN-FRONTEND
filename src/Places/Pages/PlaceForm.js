@@ -40,10 +40,13 @@ let validationSchema = {
     .required(),
   image: Yup.mixed()
     .required("image is required.")
-    .test("fileSize", "file is too large, it should be less than 5MB", 
-    (value) => {
-       return value && value.size <= FILE_SIZE} 
-       ),
+    .test(
+      "fileSize",
+      "file is too large, it should be less than 5MB",
+      (value) => {
+        return value && value.size <= FILE_SIZE;
+      }
+    ),
 };
 
 const useStyles = makeStyles({
@@ -192,19 +195,23 @@ const PlaceForm = (props) => {
                   title: value.title,
                   description: value.description,
                 }),
-                { "Content-Type": "application/json" }
+                { 
+                  "Content-Type": "application/json",
+                  "Authorization": auth.token  
+                }
               );
             } else {
               const formData = new FormData();
-              formData.append('title', value.title);
-              formData.append('address', value.address);
-              formData.append('description', value.description);
-              formData.append('creator', auth.userId);
-              formData.append('image', value.image);
+              formData.append("title", value.title);
+              formData.append("address", value.address);
+              formData.append("description", value.description);
+              formData.append("creator", auth.userId);
+              formData.append("image", value.image);
               await sendRequest(
                 "http://localhost:5000/api/places",
                 "POST",
-                formData
+                formData,
+                { Authorization: auth.token }
               );
             }
             history.push("/");
@@ -235,7 +242,7 @@ const PlaceForm = (props) => {
                       type="submit"
                       size="large"
                       variant="contained"
-                      disabled={!props.isValid || props.isSubmitting}
+                      //disabled={!props.isValid || props.isSubmitting}
                       color="primary"
                       className={classes.sybmitBtn}
                     >

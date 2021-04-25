@@ -193,7 +193,7 @@ const UserAuth = (props) => {
                   "Content-Type": "application/json",
                 }
               );
-              auth.login(responseData.user._id);
+              auth.login(responseData.userId, responseData.token);
             } else {
               const formData = new FormData();
               formData.append('email', value.email);

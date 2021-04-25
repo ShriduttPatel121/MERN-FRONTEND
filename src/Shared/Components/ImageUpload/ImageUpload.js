@@ -36,7 +36,7 @@ const ImageUpload = (props) => {
 
     const pickImageHandler = () => {
         inputRef.current.click();
-        //setIsTouched(true);
+        setIsTouched(true);
     }
     const [image, setImage] = useState(null);
     
@@ -49,7 +49,7 @@ const ImageUpload = (props) => {
             setImage(fileReader.result);
         }
         fileReader.readAsDataURL(field.value);
-        setIsTouched(true);
+        //setIsTouched(true);
     }, [field.value, setIsTouched]);
 
     return (
@@ -69,7 +69,7 @@ const ImageUpload = (props) => {
                 {
                     !sigupImage ? (
                         <div className={classes.place_image} onClick={pickImageHandler}>
-                            {image ? <img onClick={pickImageHandler} sizes="40" src={image} alt="Preview"/> : <div style={{width: '100%', backgroundColor: '#ccccc'}}> <CameraAltOutlined style={{ fontSize: 60 }}/> </div>}
+                            {image ? <img sizes="40" src={image} alt="Preview"/> : <div style={{width: '100%', backgroundColor: '#ccccc'}}> <CameraAltOutlined style={{ fontSize: 60 }}/> </div>}
                         </div>
                     ): null
                 }
