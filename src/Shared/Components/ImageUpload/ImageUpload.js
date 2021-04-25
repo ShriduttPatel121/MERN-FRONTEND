@@ -32,10 +32,14 @@ const ImageUpload = (props) => {
     const inputRef = useRef();
     const { sigupImage } = props
     const [field, meta] = useField(props);
+    const [isTouched, setIsTouched] = useState(false);
+
     const pickImageHandler = () => {
         inputRef.current.click();
+        //setIsTouched(true);
     }
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState(null);
+    
     useEffect(() => {
         if(!field.value ){
             return;
@@ -45,7 +49,8 @@ const ImageUpload = (props) => {
             setImage(fileReader.result);
         }
         fileReader.readAsDataURL(field.value);
-    }, [field.value]);
+        setIsTouched(true);
+    }, [field.value, setIsTouched]);
 
     return (
         <div>
@@ -71,7 +76,7 @@ const ImageUpload = (props) => {
                 
             </div>
             {
-                meta.error ? (
+                meta.error && isTouched ? (
                     <div className="error">
                     { meta.error }
                     </div>
