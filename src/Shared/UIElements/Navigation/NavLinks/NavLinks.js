@@ -62,9 +62,9 @@ const NavLinks = (props) =>{
         <React.Fragment>
             <Tabs value={tabValue} onChange={handleChange} className={ props.orientation === 'vertical'? classes.verticalRoot : classes.root} orientation={props.orientation}>
                 <Tab label="All Users" onClick={props.closeDrawer(false)} value="/" to="/" exact component={NavLink}/>
-                { auth.isLoggedIn ? <Tab label="My Places" onClick={props.closeDrawer(false)} value="/places" to={`/${auth.userId}/places`} component={NavLink}/> : null}
-                { auth.isLoggedIn ? <Tab label="Add Places" onClick={props.closeDrawer(false)} value="/place/new" to="/place/new" component={NavLink}/> : null}
-                { auth.isLoggedIn ? <Tab label="Logout" onClick={auth.logout} value="/logout" to="/Auth" component={NavLink}/> : null}
+                <Tab style={{display: auth.isLoggedIn ? 'flex': 'none'}} label="My Places" onClick={props.closeDrawer(false)} value="/places" to={`/${auth.userId}/places`} component={NavLink}/>
+                <Tab style={{display: auth.isLoggedIn ? 'flex': 'none'}} label="Add Places" onClick={props.closeDrawer(false)} value="/place/new" to="/place/new" component={NavLink}/>
+                <Tab style={{display: auth.isLoggedIn ? 'flex': 'none'}} label="Logout" onClick={auth.logout} value="/logout" to="/Auth" component={NavLink} />
                  <Tab label="Authenticate" style={{display: !auth.isLoggedIn ? 'flex': 'none'}} onClick={props.closeDrawer(false)} value="/Auth" to="/Auth" component={NavLink}/>
                 <Tab disabled value={0} style={{display : 'none'}}/>
             </Tabs>
