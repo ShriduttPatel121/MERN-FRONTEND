@@ -183,7 +183,7 @@ const UserAuth = (props) => {
           try {
             if (mode === "login") {
               const responseData = await sendRequest(
-                "http://localhost:5000/api/users/login",
+                `${process.env.REACT_APP_BACKEND_URL}users/login`,
                 "POST",
                 JSON.stringify({
                   email: value.email,
@@ -201,7 +201,7 @@ const UserAuth = (props) => {
               formData.append('password', value.password);
               formData.append('image', value.userImage);
               await sendRequest(
-                "http://localhost:5000/api/users/signup",
+                `${process.env.REACT_APP_BACKEND_URL}users/signup`,
                 "POST",
                 formData
               );

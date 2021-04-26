@@ -5,7 +5,6 @@ import { Typography, Button, CircularProgress } from '@material-ui/core';
 
 import { useHttpClient } from '../../Shared/hooks/http-hook';
 import ErrorModal from '../../Shared/UIElements/ErrorModal/ErrorModal';
-import { endpoints } from '../../environment/endpoints';
 
 
 const UserPlaces = (props) =>{
@@ -29,7 +28,7 @@ const UserPlaces = (props) =>{
       useEffect(() => {
         const getPlaces = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/places/user/${id}`);
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}places/user/${id}`);
                 setPlaces(responseData.places);
             } catch(e) {
                 setErrorModalVisibility(true);

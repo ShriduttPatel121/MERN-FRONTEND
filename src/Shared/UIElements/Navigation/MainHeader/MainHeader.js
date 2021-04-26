@@ -70,7 +70,7 @@ const MainHeader = (props) => {
             <MenuIcon/>
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            Places
           </Typography>
           <span className="horizontal-nav">
             <NavLinks orientation="horizontal" closeDrawer={toggleDrawer}/>

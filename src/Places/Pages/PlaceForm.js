@@ -95,7 +95,7 @@ const PlaceForm = (props) => {
     const fillUpdateForm = async () => {
       try {
         const response = await sendRequest(
-          `http://localhost:5000/api/places/${placeId}`,
+          `${process.env.REACT_APP_BACKEND_URL}places/${placeId}`,
           "GET",
           null,
           { "Content-Type": "application/json" }
@@ -189,7 +189,7 @@ const PlaceForm = (props) => {
           try {
             if (update) {
               await sendRequest(
-                `http://localhost:5000/api/places/${placeId}`,
+                `${process.env.REACT_APP_BACKEND_URL}places/${placeId}`,
                 "PATCH",
                 JSON.stringify({
                   title: value.title,
@@ -207,7 +207,7 @@ const PlaceForm = (props) => {
               formData.append("description", value.description);
               formData.append("image", value.image);
               await sendRequest(
-                "http://localhost:5000/api/places",
+                `${process.env.REACT_APP_BACKEND_URL}places`,
                 "POST",
                 formData,
                 { Authorization: auth.token }
